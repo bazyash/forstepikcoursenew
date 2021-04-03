@@ -18,11 +18,18 @@ class ProductPage(BasePage):
             if '\n' in alert:
                 alert = alert.split('\n')[0]
             alert_texts.append(alert)
-            print(alert)
         expected_alert_1 = product_name + ' has been added to your basket.'
         expected_alert_2 = 'Your basket total is now ' + str(product_price)
         assert expected_alert_1 in alert_texts, f'{expected_alert_1} is not in {alert_texts}'
         assert expected_alert_2 in alert_texts, f'{expected_alert_2} is not in {alert_texts}'
+
+    def should_not_be_success_message(self):
+        assert self.is_not_element_present(*ProductPageLocators.SUCCESS_MESSAGE), \
+            "Success message is presented, but should not be"
+
+    def should_be_disappeared_success_message(self):
+        assert self.is_disappeared(*ProductPageLocators.SUCCESS_MESSAGE), "Success message was not dissappeared, but should be"
+
 
     def get_price(self):
         price_element = self.browser.find_element(*ProductPageLocators.PRODUCT_PRICE).text
